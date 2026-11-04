@@ -1,0 +1,91 @@
+---
+---
+
+<div id="three-container" class="w-full h-full absolute inset-0 z-[-1] pointer-events-auto">
+  <div id="hint" class="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs font-medium text-text/70 tracking-widest uppercase">
+    drag to rotate · scroll to zoom
+  </div>
+</div>
+
+<script>
+  import * as THREE from 'three';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+  import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+  const container = document.getElementById('three-container');
+  if (container) {
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    container.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.03).texture;
+
+    const key = new THREE.DirectionalLight(0xffffff, 1.6);
+    key.position.set(0.4, 0.6, 0.8);
+    scene.add(key);
+
+    const camera = new THREE.PerspectiveCamera(30, container.clientWidth / container.clientHeight, 0.01, 10);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.minDistance = 0.15;
+    controls.maxDistance = 2;
+    controls.enablePan = false;
+
+    let knife: THREE.Group;
+    new GLTFLoader().load('/models/chef_knife.glb', (gltf) => {
+      knife = gltf.scene;
+      scene.add(knife);
+
+      gltf.scene.traverse((o) => {
+        if ((o as THREE.Mesh).isMesh) {
+          const mesh = o as THREE.Mesh;
+          for (const k of ['map', 'normalMap', 'metalnessMap', 'roughnessMap']) {
+             if (mesh.material && (mesh.material as any)[k]) {
+                (mesh.material as any)[k].anisotropy = renderer.capabilities.getMaxAnisotropy();
+             }
+          }
+        }
+      });
+
+      fitCamera(knife);
+    });
+
+    function fitCamera(obj: THREE.Object3D) {
+      const size = new THREE.Box3().setFromObject(obj).getSize(new THREE.Vector3());
+      const fov = THREE.MathUtils.degToRad(camera.fov);
+      const distH = (size.y / 2) / Math.tan(fov / 2);
+      const distW = (size.x / 2) / (Math.tan(fov / 2) * camera.aspect);
+      camera.position.set(0, 0, Math.max(distH, distW) * 1.25);
+      controls.update();
+    }
+
+    const clock = new THREE.Clock();
+    renderer.setAnimationLoop(() => {
+      const t = clock.getElapsedTime();
+      if (knife) {
+        knife.rotation.y = Math.sin(t * 0.5) * 0.9;
+        knife.rotation.z = Math.sin(t * 0.7) * 0.03;
+        knife.position.y = Math.sin(t * 1.1) * 0.004;
+      }
+      controls.update();
+      renderer.render(scene, camera);
+    });
+
+    window.addEventListener('resize', () => {
+      if (container) {
+          camera.aspect = container.clientWidth / container.clientHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(container.clientWidth, container.clientHeight);
+          if (knife) fitCamera(knife);
+      }
+    });
+  }
+</script>

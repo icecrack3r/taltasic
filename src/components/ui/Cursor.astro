@@ -1,0 +1,60 @@
+---
+---
+
+<div id="custom-cursor" class="fixed top-0 left-0 w-4 h-4 bg-text rounded-full pointer-events-none z-[9999] mix-blend-difference transform -translate-x-1/2 -translate-y-1/2 hidden md:block"></div>
+<div id="cursor-follower" class="fixed top-0 left-0 w-12 h-12 border border-text/50 rounded-full pointer-events-none z-[9998] transform -translate-x-1/2 -translate-y-1/2 hidden md:flex items-center justify-center text-[10px] font-bold uppercase tracking-widest text-text opacity-50"></div>
+
+<script>
+  import { gsap } from "gsap";
+
+  if (matchMedia("(pointer: fine)").matches) {
+    const cursor = document.getElementById('custom-cursor');
+    const follower = document.getElementById('cursor-follower');
+
+    if (cursor && follower) {
+      const cursorX = gsap.quickTo(cursor, "x", {duration: 0.1, ease: "power3.out"});
+      const cursorY = gsap.quickTo(cursor, "y", {duration: 0.1, ease: "power3.out"});
+
+      const followerX = gsap.quickTo(follower, "x", {duration: 0.4, ease: "power3.out"});
+      const followerY = gsap.quickTo(follower, "y", {duration: 0.4, ease: "power3.out"});
+
+      window.addEventListener("mousemove", (e) => {
+        cursorX(e.clientX);
+        cursorY(e.clientY);
+        followerX(e.clientX);
+        followerY(e.clientY);
+      });
+
+      // Add hover states for links and buttons
+      const interactables = document.querySelectorAll('a, button');
+      interactables.forEach(el => {
+          el.addEventListener('mouseenter', () => {
+              gsap.to(cursor, { scale: 0, duration: 0.2 });
+              gsap.to(follower, { scale: 1.5, backgroundColor: 'rgba(255,255,255,1)', borderColor: 'transparent', mixBlendMode: 'difference', opacity: 1, duration: 0.3 });
+          });
+          el.addEventListener('mouseleave', () => {
+              gsap.to(cursor, { scale: 1, duration: 0.2 });
+              gsap.to(follower, { scale: 1, backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.5)', mixBlendMode: 'normal', opacity: 0.5, duration: 0.3 });
+              follower.innerText = '';
+          });
+      });
+
+      // Special hover for project images
+      const projectImages = document.querySelectorAll('[data-image-reveal]');
+      projectImages.forEach(img => {
+          img.addEventListener('mouseenter', () => {
+              gsap.to(cursor, { scale: 0, duration: 0.2 });
+              gsap.to(follower, { scale: 4, backgroundColor: 'rgba(255,255,255,1)', borderColor: 'transparent', mixBlendMode: 'difference', opacity: 1, duration: 0.3 });
+              follower.innerText = 'View';
+              follower.style.mixBlendMode = 'normal';
+              follower.style.color = '#000';
+          });
+          img.addEventListener('mouseleave', () => {
+              gsap.to(cursor, { scale: 1, duration: 0.2 });
+              gsap.to(follower, { scale: 1, backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.5)', mixBlendMode: 'normal', opacity: 0.5, duration: 0.3 });
+              follower.innerText = '';
+          });
+      });
+    }
+  }
+</script>

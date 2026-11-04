@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import imgChefKnife from '../../assets/images/image 1.png';
+import ThreeKnife from '../ThreeKnife.astro';
+---
+
+<section id="hero" class="relative w-full h-[100svh] min-h-[800px] flex items-center justify-center overflow-hidden bg-bg">
+  <div class="absolute inset-0 z-0 bg-gradient-to-b from-primary/20 to-bg pointer-events-none" data-depth="0.1"></div>
+
+  <div class="container relative z-10 flex flex-col items-center justify-center text-center px-4 h-full pointer-events-none">
+
+    <div class="flex-grow flex flex-col justify-center items-center pt-20">
+        <h1 class="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-text mb-6 uppercase tracking-tighter" data-depth="-0.15">
+          Taltasic<br/>Edge
+        </h1>
+        <p class="text-xl md:text-2xl text-muted max-w-2xl" data-depth="-0.1">
+          Precision cutting for culinary mastery.
+        </p>
+    </div>
+
+    <!-- The 3D model goes here. It needs pointer events enabled. -->
+    <div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-auto" data-depth="0.4">
+        <div class="relative w-full h-[60vh] max-w-4xl mt-20">
+            <ThreeKnife />
+            <!-- Fallback image just in case WebGL fails, but we hide it mostly -->
+            <Image
+                src={imgChefKnife}
+                alt="Chef Knife Fallback"
+                class="absolute inset-0 w-full h-full object-contain drop-shadow-2xl opacity-0"
+                loading="eager"
+                fetchpriority="high"
+            />
+        </div>
+    </div>
+
+    <div class="mt-auto pb-12 flex gap-4 pointer-events-auto z-20" data-depth="0.5">
+        <button class="px-8 py-4 bg-accent text-bg font-bold rounded-full hover:scale-105 transition-transform">
+            Explore Features
+        </button>
+    </div>
+  </div>
+</section>

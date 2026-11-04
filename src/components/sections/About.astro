@@ -1,0 +1,118 @@
+---
+import { Image } from 'astro:assets';
+import imgFrame1 from '../../assets/images/Frame 1.png';
+---
+
+<section id="about" class="py-32 bg-surface relative z-10">
+  <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+    <div class="order-2 lg:order-1 relative rounded-[var(--radius-card)] overflow-hidden" data-image-reveal>
+      <div class="aspect-square md:aspect-[4/3] bg-bg rounded-[var(--radius-card)] overflow-hidden relative">
+          <Image
+            src={imgFrame1}
+            alt="About us visual"
+            class="w-full h-full object-cover opacity-80"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-bg to-transparent opacity-50"></div>
+      </div>
+
+      <div class="absolute bottom-8 left-8 p-6 bg-surface/80 backdrop-blur-md rounded-2xl border border-border" data-parallax="0.1">
+         <p class="text-4xl font-display font-bold text-text mb-1" id="years-stat">0</p>
+         <p class="text-sm text-muted uppercase tracking-widest">Years of Excellence</p>
+      </div>
+    </div>
+
+    <div class="order-1 lg:order-2">
+      <h2 class="text-sm font-bold text-accent uppercase tracking-[0.3em] mb-6 flex items-center gap-4" data-reveal="fade-up">
+        <span class="w-8 h-[1px] bg-accent"></span> Our Story
+      </h2>
+      <p class="text-3xl md:text-5xl font-display font-medium text-text leading-tight mb-8" id="about-text">
+        We forge digital experiences that are as sharp and refined as a master chef's knife.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-6 text-muted max-w-lg" data-reveal="stagger">
+        <p>Every detail matters. We combine meticulous design with high-performance engineering to deliver awwwards-winning websites.</p>
+        <p>Motion and interaction are our secret ingredients to bringing brands to life.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import SplitType from "split-type";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Text Reveal
+  const text = new SplitType('#about-text', { types: 'words' });
+
+  if (text.words) {
+    gsap.fromTo(text.words,
+      { opacity: 0.1 },
+      {
+        opacity: 1,
+        stagger: 0.05,
+        ease: "none",
+        scrollTrigger: {
+          trigger: '#about-text',
+          start: "top 80%",
+          end: "bottom 50%",
+          scrub: true,
+        }
+      }
+    );
+  }
+
+  // Number Count up
+  const stat = document.getElementById('years-stat');
+  if (stat) {
+      ScrollTrigger.create({
+          trigger: stat,
+          start: "top 90%",
+          once: true,
+          onEnter: () => {
+              gsap.to(stat, {
+                  innerHTML: 10,
+                  duration: 2,
+                  snap: { innerHTML: 1 },
+                  ease: "power2.out"
+              });
+          }
+      });
+  }
+
+  // Image Reveal
+  const imageReveal = document.querySelector('[data-image-reveal]');
+  if(imageReveal) {
+    const img = imageReveal.querySelector('img');
+    gsap.fromTo(imageReveal,
+        { clipPath: 'inset(100% 0 0 0)' },
+        {
+            clipPath: 'inset(0% 0 0 0)',
+            duration: 1.5,
+            ease: "power4.inOut",
+            scrollTrigger: {
+                trigger: imageReveal,
+                start: "top 75%",
+            }
+        }
+    );
+    if(img) {
+         gsap.fromTo(img,
+            { scale: 1.3 },
+            {
+                scale: 1,
+                duration: 1.5,
+                ease: "power4.inOut",
+                scrollTrigger: {
+                    trigger: imageReveal,
+                    start: "top 75%",
+                }
+            }
+        )
+    }
+  }
+
+</script>

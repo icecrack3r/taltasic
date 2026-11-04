@@ -1,0 +1,56 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+<footer class="relative bg-surface border-t border-border pt-20 pb-10 overflow-hidden z-0">
+  <div class="container mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20 relative z-10">
+      <div class="col-span-1 lg:col-span-2">
+        <h2 class="text-3xl font-display font-bold mb-6 text-text">Taltasic</h2>
+        <p class="text-muted max-w-sm mb-8 leading-relaxed">
+          Crafting awwwards-winning digital experiences through code, motion, and design.
+        </p>
+        <div class="flex gap-4">
+          <a href="#" class="p-3 bg-bg rounded-full text-muted hover:text-text hover:bg-border transition-colors"><Icon name="ph:twitter-logo" class="w-5 h-5" /></a>
+          <a href="#" class="p-3 bg-bg rounded-full text-muted hover:text-text hover:bg-border transition-colors"><Icon name="ph:instagram-logo" class="w-5 h-5" /></a>
+          <a href="#" class="p-3 bg-bg rounded-full text-muted hover:text-text hover:bg-border transition-colors"><Icon name="ph:dribbble-logo" class="w-5 h-5" /></a>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-text font-bold mb-6 uppercase tracking-wider text-sm">Navigation</h3>
+        <ul class="space-y-4 text-muted">
+          <li><a href="#about" class="hover:text-text transition-colors relative group overflow-hidden inline-block"><span class="block transition-transform duration-300 group-hover:-translate-y-full">About Us</span><span class="block absolute top-0 left-0 transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-text">About Us</span></a></li>
+          <li><a href="#services" class="hover:text-text transition-colors relative group overflow-hidden inline-block"><span class="block transition-transform duration-300 group-hover:-translate-y-full">Services</span><span class="block absolute top-0 left-0 transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-text">Services</span></a></li>
+          <li><a href="#work" class="hover:text-text transition-colors relative group overflow-hidden inline-block"><span class="block transition-transform duration-300 group-hover:-translate-y-full">Our Work</span><span class="block absolute top-0 left-0 transition-transform duration-300 translate-y-full group-hover:translate-y-0 text-text">Our Work</span></a></li>
+        </ul>
+      </div>
+      <div>
+         <h3 class="text-text font-bold mb-6 uppercase tracking-wider text-sm">Contact</h3>
+         <ul class="space-y-4 text-muted">
+          <li>hello@taltasic.com</li>
+          <li>+62 812 3456 7890</li>
+         </ul>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row justify-between items-center border-t border-border pt-8 relative z-10 text-muted text-sm">
+      <p>&copy; {new Date().getFullYear()} Taltasic. All rights reserved.</p>
+      <button id="back-to-top" class="mt-4 md:mt-0 flex items-center gap-2 hover:text-text transition-colors group">
+        Back to top
+        <div class="bg-border p-2 rounded-full group-hover:bg-muted/30 transition-colors">
+            <Icon name="ph:arrow-up" class="w-4 h-4" />
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <div class="absolute bottom-[-10%] left-0 w-full text-[15vw] font-display font-black text-bg/40 whitespace-nowrap text-center z-0 pointer-events-none select-none">
+    TALTASIC
+  </div>
+</footer>
+
+<script>
+    import { lenis } from '../../scripts/lenis';
+    document.getElementById('back-to-top')?.addEventListener('click', () => {
+        lenis.scrollTo(0, { duration: 1.5 });
+    });
+</script>

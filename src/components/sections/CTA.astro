@@ -1,0 +1,97 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<section class="py-40 relative bg-bg overflow-hidden flex items-center justify-center min-h-[80vh]">
+
+  <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(10,20,216,0.15)_0%,transparent_60%)] pointer-events-none"></div>
+
+  <div class="absolute top-1/2 left-0 -translate-y-1/2 w-full overflow-hidden opacity-5 pointer-events-none select-none z-0">
+    <div class="whitespace-nowrap text-[20vw] font-display font-black text-text marquee-huge">
+      START A PROJECT · START A PROJECT · START A PROJECT ·
+    </div>
+  </div>
+
+  <div class="container mx-auto px-6 relative z-10 text-center flex flex-col items-center">
+
+    <h2 class="text-sm font-bold text-accent uppercase tracking-[0.3em] mb-8" data-reveal="fade-up">
+      Have an idea?
+    </h2>
+
+    <h3 class="text-6xl md:text-8xl lg:text-9xl font-display font-bold text-text leading-[0.9] mb-16" id="cta-title">
+      Let's create<br/>something <span class="italic font-light text-primary">sharp.</span>
+    </h3>
+
+    <button class="magnetic-btn relative group">
+       <div class="btn-bg absolute inset-0 bg-accent rounded-full scale-0 group-hover:scale-100 transition-transform duration-500 ease-[var(--ease-out-expo)] origin-center"></div>
+       <div class="relative z-10 px-12 py-6 border border-border rounded-full flex items-center gap-4 text-text group-hover:text-bg group-hover:border-transparent transition-colors duration-300 font-bold text-lg tracking-wide uppercase">
+          Start a project <Icon name="ph:arrow-up-right-bold" class="w-5 h-5 group-hover:rotate-45 transition-transform duration-300" />
+       </div>
+    </button>
+
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import SplitType from "split-type";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const title = new SplitType('#cta-title', { types: 'chars' });
+  if (title.chars) {
+      gsap.fromTo(title.chars,
+          { y: 100, opacity: 0, rotateX: -90 },
+          {
+              y: 0,
+              opacity: 1,
+              rotateX: 0,
+              stagger: 0.02,
+              duration: 1.5,
+              ease: "power4.out",
+              scrollTrigger: {
+                  trigger: '#cta-title',
+                  start: "top 80%",
+              }
+          }
+      );
+  }
+
+  // Magnetic Button
+  const magnetBtn = document.querySelector('.magnetic-btn');
+  if (magnetBtn && matchMedia("(pointer: fine)").matches) {
+      const xTo = gsap.quickTo(magnetBtn, "x", {duration: 0.8, ease: "elastic.out(1, 0.3)"});
+      const yTo = gsap.quickTo(magnetBtn, "y", {duration: 0.8, ease: "elastic.out(1, 0.3)"});
+
+      magnetBtn.addEventListener("mousemove", (e: Event) => {
+          const ev = e as MouseEvent;
+          const rect = magnetBtn.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          xTo((ev.clientX - cx) * 0.3);
+          yTo((ev.clientY - cy) * 0.3);
+      });
+
+      magnetBtn.addEventListener("mouseleave", () => {
+          xTo(0);
+          yTo(0);
+      });
+  }
+
+  // Marquee
+  const marquee = document.querySelector('.marquee-huge');
+  if (marquee) {
+      gsap.to(marquee, {
+          xPercent: -50,
+          ease: "none",
+          scrollTrigger: {
+              trigger: marquee.parentElement,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1
+          }
+      });
+  }
+
+</script>

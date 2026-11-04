@@ -1,0 +1,1 @@
+import{l as t}from"./lenis.C_YCYXGu.js";import"./index.DdEiTQuA.js";import"./ScrollTrigger.C8vQSDbh.js";document.getElementById("back-to-top")?.addEventListener("click",()=>{t.scrollTo(0,{duration:1.5})});

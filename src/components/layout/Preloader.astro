@@ -1,0 +1,61 @@
+---
+---
+
+<div id="preloader" class="fixed inset-0 z-[100] bg-bg flex flex-col justify-center items-center overflow-hidden">
+  <div class="relative w-full max-w-sm px-8 overflow-hidden">
+    <div class="h-[2px] w-full bg-border relative overflow-hidden">
+       <div id="progress-bar" class="absolute top-0 left-0 h-full w-full bg-accent -translate-x-full"></div>
+    </div>
+    <div class="mt-4 flex justify-between items-center text-sm font-bold font-mono tracking-widest text-text">
+        <span>LOADING</span>
+        <span id="progress-text">0%</span>
+    </div>
+  </div>
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-muted font-display text-4xl font-bold uppercase tracking-tighter opacity-10">
+      Taltasic Edge
+  </div>
+</div>
+
+<script>
+  import { gsap } from "gsap";
+  import { lenis } from "../../scripts/lenis";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Disable scroll while loading
+    lenis.stop();
+
+    const progressBar = document.getElementById("progress-bar");
+    const progressText = document.getElementById("progress-text");
+    const preloader = document.getElementById("preloader");
+
+    // Simple fake loading animation
+    let progress = { value: 0 };
+
+    gsap.to(progress, {
+        value: 100,
+        duration: 2,
+        ease: "power2.inOut",
+        onUpdate: () => {
+            if (progressBar && progressText) {
+                gsap.set(progressBar, { xPercent: progress.value - 100 });
+                progressText.innerText = `${Math.round(progress.value)}%`;
+            }
+        },
+        onComplete: () => {
+            if (preloader) {
+                gsap.to(preloader, {
+                    yPercent: -100,
+                    duration: 1,
+                    ease: "power4.inOut",
+                    onComplete: () => {
+                        preloader.style.display = 'none';
+                        lenis.start();
+                        // Trigger hero entrance animations here or let ScrollTrigger handle it if they are within view
+                        ScrollTrigger.refresh();
+                    }
+                });
+            }
+        }
+    });
+  });
+</script>

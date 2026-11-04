@@ -1,0 +1,38 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<section id="testimonials" class="py-32 bg-bg relative overflow-hidden">
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="text-center mb-20">
+      <h2 class="text-sm font-bold text-accent uppercase tracking-[0.3em] mb-4 inline-flex items-center gap-4" data-reveal="fade-up">
+        <span class="w-8 h-[1px] bg-accent"></span> Client Words <span class="w-8 h-[1px] bg-accent"></span>
+      </h2>
+      <h3 class="text-4xl md:text-5xl font-display font-bold text-text mx-auto max-w-3xl leading-tight" data-split="lines">
+        Don't just take our word for it. Here is what our partners say.
+      </h3>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {[
+        { quote: 'Taltasic completely transformed our digital presence. Their attention to motion and detail is unmatched.', author: 'Sarah Jenkins', role: 'CMO, Culinary Arts' },
+        { quote: 'The 3D integration they built for our product showcase increased engagement by 300%. Incredible work.', author: 'David Chen', role: 'Founder, Edge Knives' },
+        { quote: 'Pixel-perfect, performant, and absolutely stunning. They are true craftsmen of the web.', author: 'Elena Rodriguez', role: 'Director, FoodTech' }
+      ].map((testi, i) => (
+         <div class="bg-surface p-10 rounded-[var(--radius-card)] border border-border flex flex-col justify-between hover:-translate-y-2 transition-transform duration-500 group" data-reveal="fade-up" style={`transition-delay: ${i * 100}ms`}>
+            <div>
+               <Icon name="ph:quotes-fill" class="w-8 h-8 text-accent/20 mb-6 group-hover:text-accent/50 transition-colors" />
+               <p class="text-lg text-text mb-8 italic">"{testi.quote}"</p>
+            </div>
+            <div>
+               <div class="flex gap-1 mb-2">
+                   {[1,2,3,4,5].map(() => <Icon name="ph:star-fill" class="w-4 h-4 text-accent" />)}
+               </div>
+               <p class="font-bold text-text">{testi.author}</p>
+               <p class="text-sm text-muted">{testi.role}</p>
+            </div>
+         </div>
+      ))}
+    </div>
+  </div>
+</section>

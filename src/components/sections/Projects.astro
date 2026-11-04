@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import imgButterfly from '../../assets/images/Butterfly_knife_product_photograph_06add168_2K 1.png';
+import imgFolding from '../../assets/images/Folding_knife_product_photograph_c5c0fd77_2K 1.png';
+import imgImage1 from '../../assets/images/image 1.png';
+
+const projects = [
+  { title: 'The Butterfly', category: 'Product / WebGL', year: '2023', img: imgButterfly },
+  { title: 'Folding Edge', category: 'E-commerce / Motion', year: '2024', img: imgFolding },
+  { title: 'Culinary Master', category: 'Brand / 3D Experience', year: '2024', img: imgImage1 },
+];
+---
+
+<section id="work" class="py-32 bg-surface">
+  <div class="container mx-auto px-6">
+
+    <div class="flex flex-col md:flex-row justify-between items-end mb-20">
+      <div>
+        <h2 class="text-sm font-bold text-accent uppercase tracking-[0.3em] mb-4 flex items-center gap-4" data-reveal="fade-up">
+          <span class="w-8 h-[1px] bg-accent"></span> Featured Work
+        </h2>
+        <h3 class="text-4xl md:text-6xl font-display font-bold text-text" data-split="lines">
+          Selected Projects
+        </h3>
+      </div>
+      <a href="#" class="mt-8 md:mt-0 text-sm font-bold text-muted hover:text-text border-b border-muted hover:border-text transition-colors pb-1 flex items-center gap-2">
+        View All Cases
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16">
+      {projects.map((proj, idx) => (
+        <a href="#" class={`group block ${idx === 1 ? 'md:mt-32' : ''} ${idx === 2 ? 'md:col-span-2' : ''}`}>
+          <div class="relative overflow-hidden rounded-[var(--radius-card)] aspect-[4/5] md:aspect-[3/4] lg:aspect-[4/3] bg-bg mb-6" data-image-reveal>
+             <Image
+                src={proj.img}
+                alt={proj.title}
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+             />
+             <div class="absolute inset-0 bg-bg/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+
+          <div class="flex justify-between items-start">
+             <div>
+                 <h4 class="text-2xl font-display font-bold text-text mb-2 overflow-hidden relative inline-block group">
+                     <span class="block transition-transform duration-500 group-hover:-translate-y-full">{proj.title}</span>
+                     <span class="block absolute top-0 left-0 transition-transform duration-500 translate-y-full group-hover:translate-y-0 text-accent">{proj.title}</span>
+                 </h4>
+                 <p class="text-sm text-muted">{proj.category}</p>
+             </div>
+             <div class="text-sm font-mono text-muted py-1 px-3 border border-border rounded-full">
+                 {proj.year}
+             </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+  </div>
+</section>
